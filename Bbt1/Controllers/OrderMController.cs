@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace Bbt1.Controllers
 {
@@ -27,13 +28,73 @@ namespace Bbt1.Controllers
         }
 
         // GET: OrderM
-        public ActionResult Index()
+        public ActionResult Index(string SortOrder, int? page)
         {
+            
+            ViewBag.name = String.IsNullOrEmpty(SortOrder) ? "name_desc" : "";
+            ViewBag.receive = SortOrder == "receive" ? "receive_desc" : "receive";
+            ViewBag.address = SortOrder == "address" ? "address_desc" : "address";
+            ViewBag.dway = SortOrder == "dway" ? "dway_desc" : "dway";
+            ViewBag.pay = SortOrder == "pay" ? "receive_desc" : "pay";
+            ViewBag.odate = SortOrder == "odate" ? "odate_desc" : "odate";
+            ViewBag.ddate = SortOrder == "ddate" ? "ddate_desc" : "ddate";
+            ViewBag.status = SortOrder == "status" ? "status_desc" : "status";
             var order = db.Order.Where(x => x.o_status != 8.ToString()).ToList().OrderBy(x => x.o_status).ThenByDescending(x => x.o_delivedate).ThenByDescending(x => x.o_date);
 
-
-
-            return View(order);
+            switch (SortOrder)
+            {
+                case "name_desc":
+                    order = order.OrderByDescending(s => s.Member.m_name);
+                    break;
+                case "address":
+                    order = order.OrderBy(s => s.o_address);
+                    break;
+                case "address_desc":
+                    order = order.OrderByDescending(s => s.o_address);
+                    break;
+                case "receive":
+                    order = order.OrderBy(s => s.o_receiver);
+                    break;
+                case "receive_desc":
+                    order = order.OrderByDescending(s => s.o_receiver);
+                    break;
+                case "dway":
+                    order = order.OrderBy(s => s.Delive_Way.dw_name);
+                    break;
+                case "dway_desc":
+                    order = order.OrderByDescending(s => s.Delive_Way.dw_name);
+                    break;
+                case "pay":
+                    order = order.OrderBy(s => s.Payment.pay_name);
+                    break;
+                case "pay_desc":
+                    order = order.OrderByDescending(s => s.Payment.pay_name);
+                    break;
+                case "odate":
+                    order = order.OrderBy(s => s.o_date);
+                    break;
+                case "odate_desc":
+                    order = order.OrderByDescending(s => s.o_date);
+                    break;
+                case "ddate":
+                    order = order.OrderBy(s => s.o_delivedate);
+                    break;
+                case "ddate_desc":
+                    order = order.OrderByDescending(s => s.o_delivedate);
+                    break;
+                case "status":
+                    order = order.OrderBy(s => s.o_status);
+                    break;
+                case "status_desc":
+                    order = order.OrderByDescending(s => s.o_status);
+                    break;
+                default:
+                    order = order.OrderBy(s => s.Member.m_name);
+                    break;
+            }
+            int pageSize = 8;
+            int pageNumber = (page ?? 1);
+            return View(order.ToPagedList(pageNumber, pageSize));
         }
 
         //查看訂單詳細

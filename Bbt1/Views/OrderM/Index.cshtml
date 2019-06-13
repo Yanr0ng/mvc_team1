@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Bbt1.Models.Order>
+﻿@model PagedList.IPagedList<Bbt1.Models.Order>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Order Management";
@@ -21,43 +23,43 @@
                                 <tr>
                                     <th></th>
                                     <th>
-                                        @Html.ActionLink("訂購人", "Index", new { SortOrder = ViewBag.name})
+                                        @Html.ActionLink("訂購人", "Index", new { SortOrder = ViewBag.name, currentFilter = ViewBag.CurrentFilter })
                                         @*@Html.DisplayNameFor(model => model.Member.m_name)*@
 
                                     </th>
                                     <th>
-                                        @Html.ActionLink("收件人", "Index", new { SortOrder = ViewBag.receive })
+                                        @Html.ActionLink("收件人", "Index", new { SortOrder = ViewBag.receive, currentFilter = ViewBag.CurrentFilter })
                                         @*@Html.DisplayNameFor(model => model.o_receiver)*@
-                                        
+
                                     </th>
                                     <th>
-                                        @Html.ActionLink("收件地址", "Index", new { SortOrder = ViewBag.address })
-                                        @*@Html.DisplayNameFor(model => model.o_address)*@                                        
+                                        @Html.ActionLink("收件地址", "Index", new { SortOrder = ViewBag.address, currentFilter = ViewBag.CurrentFilter })
+                                        @*@Html.DisplayNameFor(model => model.o_address)*@
                                     </th>
                                     <th>
-                                        @Html.ActionLink("寄貨方式", "Index", new { SortOrder = ViewBag.dway })
+                                        @Html.ActionLink("寄貨方式", "Index", new { SortOrder = ViewBag.dway, currentFilter = ViewBag.CurrentFilter })
                                         @*@Html.DisplayNameFor(model => model.Delive_Way.dw_name)*@
-                                        
+
                                     </th>
                                     <th>
-                                        @Html.ActionLink("付款方式", "Index", new { SortOrder = ViewBag.pay })
+                                        @Html.ActionLink("付款方式", "Index", new { SortOrder = ViewBag.pay, currentFilter = ViewBag.CurrentFilter })
                                         @*@Html.DisplayNameFor(model => model.Payment.pay_name)*@
-                                        
+
                                     </th>
                                     <th>
-                                        @Html.ActionLink("訂購日期", "Index", new { SortOrder = ViewBag.odate })
+                                        @Html.ActionLink("訂購日期", "Index", new { SortOrder = ViewBag.odate, currentFilter = ViewBag.CurrentFilter })
                                         @*@Html.DisplayNameFor(model => model.o_date)*@
-                                        
+
                                     </th>
                                     <th>
-                                        @Html.ActionLink("出貨日期", "Index", new { SortOrder = ViewBag.ddate })
+                                        @Html.ActionLink("出貨日期", "Index", new { SortOrder = ViewBag.ddate, currentFilter = ViewBag.CurrentFilter })
                                         @*@Html.DisplayNameFor(model => model.o_delivedate)*@
-                                        
+
                                     </th>
                                     <th>
-                                        @Html.ActionLink("出貨狀態", "Index", new { SortOrder = ViewBag.status })
+                                        @Html.ActionLink("出貨狀態", "Index", new { SortOrder = ViewBag.status, currentFilter = ViewBag.CurrentFilter })
                                         @*@Html.DisplayNameFor(model => model.o_status)*@
-                                        
+
                                     </th>
                                     <th></th>
                                 </tr>
@@ -134,6 +136,11 @@
                             }
                         </tbody>
                     </table>
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                    @*@Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
                 </div>
             </div>
         </div>
