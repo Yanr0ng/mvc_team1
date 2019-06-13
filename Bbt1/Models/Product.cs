@@ -11,7 +11,8 @@ namespace Bbt1.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,7 +25,13 @@ namespace Bbt1.Models
         }
     
         public int p_id { get; set; }
+
+        [StringLength(50, ErrorMessage = "產品名稱最多只能輸入50個字")]
+        [Required(ErrorMessage = "請輸入產品名稱")]
         public string p_name { get; set; }
+
+        [RegularExpression(@"^[0-9]*$", ErrorMessage = "只能輸入數字")]
+        [Required(ErrorMessage = "請輸入單價")]
         public Nullable<decimal> p_unitprice { get; set; }
         public Nullable<System.DateTime> p_lauchdate { get; set; }
         public Nullable<int> c_id { get; set; }

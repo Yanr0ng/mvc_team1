@@ -48,12 +48,12 @@ namespace Bbt1.Controllers
             }
            
         }
-        // POST: /Account/LogOff
-        [HttpPost]
+        //// POST: /Account/LogOff
+        //[HttpPost]
         public ActionResult LogOff()
         {
             Session["UserName"] = null;
-            return RedirectToAction("login");
+            return RedirectToAction("Index");
         }
     }
 }

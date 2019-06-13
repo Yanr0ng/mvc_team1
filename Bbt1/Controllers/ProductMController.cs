@@ -53,7 +53,7 @@ namespace Bbt1.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.c_id = new SelectList(db.Category, "c_id", "c_name", product.c_id);
-            return View(product);
+            return View("Create");
         }
 
         //編輯產品// POST: Products/Edit/5
@@ -246,13 +246,9 @@ namespace Bbt1.Controllers
                 ViewBag.c_id = new SelectList(db.Category, "c_id", "c_name");
                 return View("CreateDiscount","_LayoutA");
             }
-            //if (ModelState.IsValid)
-            //{
-                db.Discount.Add(discount);
-                db.SaveChanges();
-                return RedirectToAction("Discount", "ProductM");
-            //}
-            //return View(discount);
+            db.Discount.Add(discount);
+            db.SaveChanges();
+            return RedirectToAction("Discount", "ProductM");
         }
 
         //--------------------刪除----------------------
