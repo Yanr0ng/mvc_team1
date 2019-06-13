@@ -50,13 +50,31 @@ namespace Bbt1.Controllers
             return View();
         }
 
-        //出貨按鈕
+        //出貨按鈕    //寄信給使用者
         public ActionResult Ship(int? id)
         {
             var order = db.Order.Where(m => m.o_id == id).FirstOrDefault();
             order.o_status = 1.ToString();
             order.o_delivedate = DateTime.Now;
             db.SaveChanges();
+
+            var uid = db.Member.Where(x => x.m_id == order.m_id).FirstOrDefault().m_email_id;   //guid產出的不重複代號
+            var email = db.Member.Where(x => x.m_id == order.m_id).FirstOrDefault().m_email;    //收信人的email
+            string a = Convert.ToString(uid);
+
+            string cont;
+            cont = "http://" + Request.Url.Authority + "/Member/result?uid=" + a;  //訂單的網址
+            System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();//建立MAIL   
+            MyMail.From = new System.Net.Mail.MailAddress("gurutw201905@gmail.com", "Guru");//寄信人   
+            MyMail.To.Add(new System.Net.Mail.MailAddress(email));//收信人1     
+            MyMail.Subject = "商品已出貨成功！";//主題   
+            MyMail.Body = "您好\n\n您的訂單已出貨，謝謝你的支持\n\n以下網址能夠返回網站看到此筆出貨的訂單\n\n" + cont + "\n\n 提醒您！請務必在指定時間內完成取貨，逾期未取，商品將會自動退貨！\n\n GuruTW 團隊 敬上";//內容   
+            System.Net.Mail.SmtpClient Client = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587);//GMAIL主機   
+                                                                                                      //System.Net.Mail.SmtpClient Client = new System.Net.Mail.SmtpClient("msa.hinet.net");//hinet主機   
+            Client.Credentials = new System.Net.NetworkCredential("gurutw201905@gmail.com", "wearethe@1");//帳密，Hinet不用但須在它的ADLS(區段)裡面   
+            Client.EnableSsl = true;//Gmail需啟動SSL，Hinet不用   
+            Client.Send(MyMail);//寄出
+
             return RedirectToAction("Index");
         }
 
