@@ -1,5 +1,6 @@
 ﻿using Bbt1.Models;
 using Dapper;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -28,16 +29,21 @@ namespace Bbt1.Controllers
         // GET: OrderM
         public ActionResult Index()
         {
-            var order = db.Order.Where(x => x.o_status != 8.ToString()).ToList().OrderBy(x => x.o_status).ThenByDescending(x => x.o_delivedate);
+            var order = db.Order.Where(x => x.o_status != 8.ToString()).ToList().OrderBy(x => x.o_status).ThenByDescending(x => x.o_delivedate).ThenByDescending(x => x.o_date);
+
+
+
             return View(order);
         }
 
         //查看訂單詳細
         public ActionResult OrderDetail(int? id)
         {
+            var order = db.Order.Where((x)=> x.o_id == id).FirstOrDefault();
+
             using (conn)
             {
-                string sql = "select o_receiver,p.p_name,pd.pd_color,od.od_quantity,od.od_price,od.od_discount," +
+                string sql = "select o_status,o_receiver,p.p_name,pd.pd_color,od.od_id,od.od_quantity,od.od_price,od.od_discount," +
                     "(od.od_quantity*od.od_price*od.od_discount) as Total " +
                     "from [dbo].[Order_Detail] od " +
                     "inner join [dbo].[Product_Detail] pd on pd.pd_id = od.pd_id " +
@@ -47,6 +53,7 @@ namespace Bbt1.Controllers
                 var order_detail = conn.Query(sql).ToList();
                 ViewBag.order_detail = order_detail;
             }
+            ViewBag.order = order;
             return View();
         }
 
@@ -91,20 +98,27 @@ namespace Bbt1.Controllers
         public ActionResult DeleteOrderDetail(int? id)
         {
             var od = db.Order_Detail.Where(x => x.od_id == id).FirstOrDefault();
-            var oid = od.o_id;
+            var oid = od.o_id;            
             db.Order_Detail.Remove(od);
             db.SaveChanges();
             return RedirectToAction("OrderDetail", new { id = oid });
         }
 
-
-        public ActionResult gggg()
+        //訂單轉變PDF檔
+        public ActionResult ExportPDF(int id)
         {
-            var user = db.Member.FirstOrDefault((x) => x.m_email == "Kevin@gmail.com")?.m_id;
-            var sc = db.Shopping_Cart.Where((x) => x.m_id == user);
-            var pd = db.Product_Detail.Where((x) => sc.Any((y) => y.pd_id == x.pd_id));
-            var p = db.Product.Where((x) => pd.Any((y) => y.p_id == x.p_id)).ToList();
-            return null;
+            //UrlAsPdf pdf = new UrlAsPdf("https://gurutwadmin.azurewebsites.net/OrderM/OrderDetail/" + id); 
+            ////ActionAsPdf pdf = new ActionAsPdf("Dashboard");
+            //pdf.FileName = "OrderDetail.pdf";
+            //pdf.PageSize = Rotativa.Options.Size.A4;
+            //return pdf;
+
+            return new ActionAsPdf("OrderDetail",new { id })
+            {
+                FileName = Server.MapPath("OrderDetail.pdf"),
+                PageSize = Rotativa.Options.Size.A4
+            };
         }
+
     }
 }

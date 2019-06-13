@@ -19,7 +19,7 @@ namespace Bbt1.Models
 
         [StringLength(50, ErrorMessage = "活動標題最多只能輸入50個字")]
         [Required(ErrorMessage = "請輸入活動標題")]
-        [RegularExpression(@"^[\u4e00-\u9fa5],{0,}$", ErrorMessage = "活動標題只能輸入中文")]
+        //[RegularExpression(@"^[\u4e00-\u9fa5],{0,}$", ErrorMessage = "活動標題只能輸入中文")]
         public string d_activity { get; set; }
 
         [RegularExpression(@"^[0-9]+(.[0-9]{1,1})?$", ErrorMessage = "只能輸入小數")]

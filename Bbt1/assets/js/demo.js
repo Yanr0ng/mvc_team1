@@ -24,7 +24,7 @@ $.notify({
 	type: 'secondary',
 	placement: {
 		from: "bottom",
-		align: "right"
+		align: "center"
 	},
 	time: 1000,
 });

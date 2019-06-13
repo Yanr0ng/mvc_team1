@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Order Management";
+    var aa = ViewBag.order;
+    var bb = ViewBag.order1;
 }
 
 <div class="row">
@@ -14,60 +16,68 @@
                 <div class="table-responsive">
                     <table id="basic-datatables" class="display table table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th></th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.Member.m_name)*@
-                                    訂購人
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.o_receiver)*@
-                                    收件人
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.o_address)*@
-                                    收件地址
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.Delive_Way.dw_name)*@
-                                    寄貨方式
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.Payment.pay_name)*@
-                                    付款方式
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.o_date)*@
-                                    訂購日期
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.o_delivedate)*@
-                                    出貨日期
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.o_status)*@
-                                    出貨狀態
-                                </th>
-                                <th></th>
-                            </tr>
+                            @using (Html.BeginForm("Index", "OrderM", FormMethod.Get))
+                            {
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        @Html.ActionLink("訂購人", "Index", new { SortOrder = ViewBag.name})
+                                        @*@Html.DisplayNameFor(model => model.Member.m_name)*@
+
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("收件人", "Index", new { SortOrder = ViewBag.receive })
+                                        @*@Html.DisplayNameFor(model => model.o_receiver)*@
+                                        
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("收件地址", "Index", new { SortOrder = ViewBag.address })
+                                        @*@Html.DisplayNameFor(model => model.o_address)*@                                        
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("寄貨方式", "Index", new { SortOrder = ViewBag.dway })
+                                        @*@Html.DisplayNameFor(model => model.Delive_Way.dw_name)*@
+                                        
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("付款方式", "Index", new { SortOrder = ViewBag.pay })
+                                        @*@Html.DisplayNameFor(model => model.Payment.pay_name)*@
+                                        
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("訂購日期", "Index", new { SortOrder = ViewBag.odate })
+                                        @*@Html.DisplayNameFor(model => model.o_date)*@
+                                        
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("出貨日期", "Index", new { SortOrder = ViewBag.ddate })
+                                        @*@Html.DisplayNameFor(model => model.o_delivedate)*@
+                                        
+                                    </th>
+                                    <th>
+                                        @Html.ActionLink("出貨狀態", "Index", new { SortOrder = ViewBag.status })
+                                        @*@Html.DisplayNameFor(model => model.o_status)*@
+                                        
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            }
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td >
+                                    <td>
                                         <div class="d-inline-flex">
                                             @if (item.o_status == 0.ToString())
                                             {
                                                 <a href="~/OrderM/Ship/@item.o_id" onclick="return confirm('出貨?')"><i class="fas fa-truck" style="color:cornflowerblue;font-size:18px;"></i></a>
-                                                @*@Html.ActionLink("出貨", "Ship", new { id = item.o_id }, new { @class = "btn btn-outline-secondary alert_demo_3_3", @style = "width:50px;font-size:14px" })*@
+                                                <a class="ml-2" href="~/OrderM/DeleteOrder/@item.o_id" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
                                             }
                                             else if (item.o_status == 1.ToString())
                                             {
-                                                @*@Html.ActionLink("出貨", "Ship", new { id = item.o_id }, new { @class = "btn btn-outline-secondary disabled", @style = "width:50px;font-size:14px" })*@
-                                                @*<a href="~/OrderM/Ship/@item.o_id" onclick="return confirm('出貨?')" disabled="disabled"><i class="fas fa-truck" style="color:cornflowerblue;font-size:18px;"></i></a>*@
                                             }
-                                            <a class="ml-2" href="~/OrderM/DeleteOrder/@item.o_id" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+
                                         </div>
                                     </td>
                                     <td>
@@ -130,6 +140,16 @@
     </div>
 </div>
 <script src="~/Assets/vendor/jquery/jquery.js"></script>
+@*<script>
+        $('.namesort').click(function () {
+            console.log("123");
+            var list = @alist;
+            var list1 = list.sort(function (a, b) {
+                return a.Member.m_name > b.Member.m_name ? 1 : -1;
+            });
+            console.log(list);
+        })
+    </script>*@
 <script>
     $('.alert_demo_3_3').click(function (e) {
         swal("Successful shipment!", "You clicked the button!", {
@@ -141,40 +161,4 @@
             },
         });
     });
-</script>
-<script>
-    $('.alert_demo_7').click(function (e) {
-        swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            type: 'warning',
-            buttons: {
-                confirm: {
-                    text: 'Yes, delete it !',
-                    className: 'btn btn-success'
-                },
-                cancel: {
-                    visible: true,
-                    className: 'btn btn-danger'
-                }
-            }
-        }).then((Delete) => {
-            if (Delete) {
-                swal({
-                    title: 'Deleted!',
-                    text: 'The Order has been deleted.',
-                    type: 'success',
-                    buttons: {
-                        confirm: {
-                            className: 'btn btn-success'
-                        }
-                    }
-                });
-
-            } else {
-                swal.close();
-            }
-        });
-    });
-
 </script>

@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<Bbt1.Models.Order_Detail>
 @{
+    ViewBag.Title = "訂單內容";
     var detail = ViewBag.order_detail;
+    var order = ViewBag.order;
     var ttotal = 0;
     foreach (var item in detail)
     {
@@ -8,16 +10,27 @@
     }
 }
 
-@*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title h2">Order Detail</h2>
+                <h2 class="card-title h3">
+                    訂單詳細
+                    <span class="pull-right">
+                        <a href="@Url.Action("ExportPDF","OrderM",new { id = order.o_id})" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                    </span>
+                </h2>          
             </div>
             <div class="card-body">
+                <div>
+                    <b>訂購人</b> @order.Member.m_name<span class="pull-right">訂購日期 @order.o_date</span>  <br />
+                    <b>收件人</b> @order.o_receiver @if (order.o_status == 1.ToString())
+                    {<span class="pull-right">出貨日期 @order.o_delivedate</span>} <br />
+                    <b>收件地址</b> @order.o_address  <br />
+                    <b>寄貨方式</b> @order.Delive_Way.dw_name  <br />
+                    <b>付款方式</b> @order.Payment.pay_name
+
+                </div><hr />
                 <div class="table-responsive">
                     <table id="basic-datatables" class="display table table-striped table-hover">
                         <thead>
@@ -47,6 +60,7 @@
                                 <th>
                                     金額
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,21 +88,24 @@
                                     <td>
                                         @item.Total
                                     </td>
-                                    @*<td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.od_id }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.od_id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.od_id })
-                        </td>*@
+                                    <td>
+                                        @if (item.o_status == 0.ToString())
+                                        {
+                                            <a href="~/OrderM/DeleteOrderDetail/@item.od_id" onclick="return confirm('刪除此筆商品?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+                                        }
+                                        else if (item.o_status == 1.ToString())
+                                        {
+                                        }
+                                    </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
 
                     <hr />
-                    <div class="text-right" style="font-weight:bolder;margin-right:100px;">總金額 : @ttotal</div>
+                    <div class="text-right" style="font-weight:bolder;margin-right:180px;">總金額 : @ttotal</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
