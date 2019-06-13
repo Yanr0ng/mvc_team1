@@ -33,6 +33,7 @@ namespace Bbt1.Models
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "只能輸入數字")]
         [Required(ErrorMessage = "請輸入單價")]
         public Nullable<decimal> p_unitprice { get; set; }
+
         public Nullable<System.DateTime> p_lauchdate { get; set; }
         public Nullable<int> c_id { get; set; }
         public string p_status { get; set; }

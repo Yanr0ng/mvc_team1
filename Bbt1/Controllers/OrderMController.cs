@@ -89,7 +89,7 @@ namespace Bbt1.Controllers
                     order = order.OrderByDescending(s => s.o_status);
                     break;
                 default:
-                    order = order.OrderBy(s => s.Member.m_name);
+                    order = order.Where(x => x.o_status != 8.ToString()).ToList().OrderBy(x => x.o_status).ThenByDescending(x => x.o_delivedate).ThenByDescending(x => x.o_date);;
                     break;
             }
             int pageSize = 8;
