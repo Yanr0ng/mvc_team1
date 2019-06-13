@@ -56,24 +56,24 @@ namespace Bbt1.Controllers
                     "group by p.p_name order by sum desc";
                 //daily earning
                 string sql3 = "select convert(date, o.o_date), " +
-                    "cast(sum(od_price * od_quantity * od.od_discount) as int) as sum " +
+                    "cast(sum(od_price * od_quantity ) as int) as sum " +
                     "from Order_Detail od " +
-                    "inner join [dbo].[Order] o on pd_id = od.pd_id " +
+                    "inner join [dbo].[Order] o on o.o_id = od.o_id " +
                     "where convert(date, o.o_date) = convert(date, GETDATE() ) " +
                     "group by convert(date, o.o_date)";
 
                 //monthly earning
                 string sql4 = "select  convert(date,o.o_date), " +
-                    "cast (sum(od_price*od_quantity*od.od_discount) as int) as sum " +
+                    "cast (sum(od_price*od_quantity) as int) as sum " +
                     "from Order_Detail od " +
-                    "inner join [dbo].[Order] o on pd_id = od.pd_id " +
+                    "inner join [dbo].[Order] o on o.o_id = od.o_id " +
                     "where MONTH(o.o_date) = MONTH(GETDATE()) " +
                     "group by convert(date, o.o_date)";
 
                 string sql5 = "select top 7 convert(date, o.o_date) as day, " +
                     "sum(od.od_quantity * od.od_price) as sum " +
                     "from Order_Detail od " +
-                    "inner join [dbo].[Order] o on pd_id = od.pd_id " +
+                    "inner join [dbo].[Order] o on o.o_id = od.o_id " +
                     "group by convert(date, o.o_date) " +
                     "order by convert(date, o.o_date) desc";
 

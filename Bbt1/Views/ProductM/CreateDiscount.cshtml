@@ -33,7 +33,7 @@
 
         <div class="form-group">
             @*@Html.LabelFor(model => model.d_discount, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            開始日期
+            促銷折扣
             <div class="col-md-10">
                 @Html.EditorFor(model => model.d_discount, new { htmlAttributes = new { @class = "form-control", required = "required" } })
                 @Html.ValidationMessageFor(model => model.d_discount, "", new { @class = "text-danger" })
@@ -42,7 +42,7 @@
 
         <div class="form-group">
             @*@Html.LabelFor(model => model.d_startdate, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            截止日期
+            開始日期
             <div class="col-md-10">
                 @Html.EditorFor(model => model.d_startdate, new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
                 @Html.ValidationMessageFor(model => model.d_startdate, "", new { @class = "text-danger" })
@@ -51,7 +51,7 @@
 
         <div class="form-group">
             @*@Html.LabelFor(model => model.d_enddate, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            促銷種類
+            截止日期
             <div class="col-md-10">
                 @Html.EditorFor(model => model.d_enddate, new { htmlAttributes = new { @class = "form-control", type = "date", required = "required" } })
                 @Html.ValidationMessageFor(model => model.d_enddate, "", new { @class = "text-danger" })
@@ -60,7 +60,7 @@
 
         <div class="form-group">
             @*@Html.LabelFor(model => model.c_id, "c_id", htmlAttributes: new { @class = "control-label col-md-2" })*@
-            促銷折扣
+            促銷種類
             <div class="col-md-10">
                 @Html.DropDownList("c_id", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.c_id, "", new { @class = "text-danger" })
