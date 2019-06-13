@@ -55,7 +55,8 @@
                 @Html.DisplayFor(modelItem => item.d_discount)
             </td>
             <td>
-                @Html.ActionLink("Delete", "DeleteDiscount", new { id = item.d_id })
+                @*@Html.ActionLink("Delete", "DeleteDiscount", new { id = item.d_id })*@
+                <a href="~/ProductM/DeleteDiscount/@item.d_id" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
             </td>
         </tr>
     }

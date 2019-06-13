@@ -21,11 +21,14 @@
     @foreach (var item in Model)
     {
         <div class="col-xl-4 col-md-6 mb-4" style="padding-left:40px">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="@item.pp_path" alt="Card image cap">
-                <div class="card-body">
-                    @Html.ActionLink("Delete", "DeleteProductPicture", new { id = item.pp_id })
+            <div class="card" >
+                <div class="card-header">
+                    <a class="pull-right" href="~/ProductM/DeleteProductPicture/@item.pp_id" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+                    @*@Html.ActionLink("Delete", "DeleteProductPicture", new { id = item.pp_id })*@
                     @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
+                </div>
+                <div class="card-body">
+                    <img class="card-img-top" src="@item.pp_path" alt="Card image cap" style="height:100%;width:100%">
                 </div>
             </div>
         </div>

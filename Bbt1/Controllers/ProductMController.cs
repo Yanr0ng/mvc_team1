@@ -241,13 +241,18 @@ namespace Bbt1.Controllers
         [HttpPost]
         public ActionResult CreateDiscount([Bind(Include = "d_activity,d_startdate,d_enddate,c_name,d_discount,c_id,c_name")]Discount discount)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid == false)
             {
+                ViewBag.c_id = new SelectList(db.Category, "c_id", "c_name");
+                return View("CreateDiscount","_LayoutA");
+            }
+            //if (ModelState.IsValid)
+            //{
                 db.Discount.Add(discount);
                 db.SaveChanges();
                 return RedirectToAction("Discount", "ProductM");
-            }
-            return View(discount);
+            //}
+            //return View(discount);
         }
 
         //--------------------刪除----------------------
