@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Bbt1.Models.Product>
+
+<link href="~/Assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="~/Assets/css/popup.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Product Management";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title h2">Product Management</h2>
+                @Html.ActionLink("新增產品", "Create")
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="basic-datatables" class="display table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.p_name)*@
+                                    產品名稱
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.p_unitprice)*@
+                                    單價
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.Category.c_name)*@
+                                    分類
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.p_lauchdate)*@
+                                    上架時間
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.p_status)*@
+                                    上架狀況
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {                                                 
+                                <tr>
+                                    <td style="padding:0 0 0 10px !important;">
+                                        <a href="~/ProductM/Edit/@item.p_id"><i class="fa fa-edit" style="color:dodgerblue;margin-right:10px;font-size:18px;"></i></a>
+                                        <a href="~/ProductM/Delete/@item.p_id" class="alert_demo_7" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+                                        @*<button type="button" class="btn btn-outline-secondary popmodal" id="pid" onclick="getid(@item.p_id,'/ProductM/Edit')" style="width:65px;font-size:10px">產品詳細</button>*@
+                                    </td>
+                                    <td style="padding:0 10px !important;">
+                                        @Html.DisplayFor(modelItem => item.p_name)
+                                    </td>
+                                    <td>
+                                        $@Html.DisplayFor(modelItem => item.p_unitprice)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Category.c_name)
+                                    </td>
+                                    <td>
+                                        @*@Html.DisplayFor(modelItem => item.p_lauchdate)*@
+                                        @DateTime.Parse(item.p_lauchdate.ToString()).ToShortDateString()
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.p_status) @*到時候要刪掉*@
+                                        @if (item.p_status == 0.ToString())
+                                        {
+                                            <label>上架中</label>
+                                        }
+                                        else if (item.p_status == 1.ToString())
+                                        {
+                                            <label>已下架</label>
+                                        }
+                                        else if (item.p_status == 8.ToString())
+                                        {
+                                            <label>產品錯誤</label>
+                                        }
+                                    </td>
+                                    <td style="padding:0 !important;">
+
+                                        @*<button type="button" class="btn btn-outline-secondary popmodal" id="pid" onclick="getid(@item.p_id,'/ProductM/ProductDetail')" style="width:65px;font-size:10px">產品詳細</button>*@
+                                        @Html.ActionLink("產品詳細", "ProductDetail", new { id = item.p_id }, new { @class = "btn btn-outline-secondary", @style = "width:65px;font-size:10px" })
+                                        @Html.ActionLink("產品特色", "ProductFeature", new { id = item.p_id }, new { @class = "btn btn-outline-secondary", @style = "width:65px;font-size:10px" })
+                                        @Html.ActionLink("產品規格", "ProductClassifies", new { id = item.p_id }, new { @class = "btn btn-outline-secondary", @style = "width:65px;font-size:10px" })
+                                        @Html.ActionLink("產品圖片", "ProductPicture", new { id = item.p_id }, new { @class = "btn btn-outline-secondary", @style = "width:65px;font-size:10px" })
+
+                                    </td>
+                                    @*<td>
+                                            <div class="modal" id="myModal" role="dialog"></div>
+                                        </td>*@@*data-url='@Url.Action("ProductDetailPopup","ProductM")'*@
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Assets/vendor/jquery/jquery.js"></script>
+@*<script>
+    $('.alert_demo_7').click(function (e) {
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            buttons: {
+                confirm: {
+                    text: 'Yes, delete it !',
+                    className: 'btn btn-success'
+                },
+                cancel: {
+                    visible: true,
+                    className: 'btn btn-danger'
+                }
+            }
+        }).then((Delete) => {
+            if (Delete) {
+                swal({
+                    title: 'Deleted!',
+                    text: 'The Order has been deleted.',
+                    type: 'success',
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success'
+                        }
+                    }
+                });
+            } else {
+                swal.close();
+            }
+        });
+    });
+
+</script>*@
+<script src="~/assets/js/plugin/datatables/datatables.min.js"></script>

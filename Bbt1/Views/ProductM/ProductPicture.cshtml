@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "ProductPicture";
+}
+
+<h2>ProductPicture</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @using (Html.BeginForm("FileUpload", "ProductM", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="file">上傳產品圖片:</label>
+                <input type="file" name="file" id="file" style="width: 100%;" accept="image/gif, image/jpeg, image/png" class="btn btn-outline-secondary" />
+                <input type="submit" value="上傳" class="submit btn btn-outline-secondary" />
+            }
+        </th>
+        <th></th>
+    </tr>
+</table>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-4 col-md-6 mb-4" style="padding-left:40px">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@item.pp_path" alt="Card image cap">
+                <div class="card-body">
+                    @Html.ActionLink("Delete", "DeleteProductPicture", new { id = item.pp_id })
+                    @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@*<img src="https://gurutwmvc.azurewebsites.net/Assets/Images/product_item_img/headset_04-03.jpg" alt="Card image cap">*@
+@*~/Assets/images/catQ.jpg*@
+

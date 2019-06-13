@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Bbt1.Models.Product_Detail>
+@*<h2>@ViewBag.p_name</h2>*@
+<p>
+    
+</p>
+
+
+@*//good table*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    @ViewBag.p_name
+                    <span class="float-sm-right text-primary">@Html.ActionLink("Create New", "CreateNewDetail", new { id = ViewBag.pd_id })</span>
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="basic-datatables" class="display table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.pd_color)*@
+                                    產品顏色
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.pd_stock)*@
+                                    庫存
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.pd_onorder)*@
+                                    Onorder
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.pd_color)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.pd_stock)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.pd_onorder)
+                                </td>
+                                
+                                <td>
+                                    <a href="~/ProductM/DeleteProductDetail/@item.pd_id" class="alert_demo_7" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+
+                                    @*@Html.ActionLink("Delete", "DeleteProductDetail", new { id = item.pd_id }, new { onclick = "return confirm('確定要刪除嗎?')" })*@
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

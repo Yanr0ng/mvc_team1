@@ -1,0 +1,483 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    var hot3 = ViewBag.hot3;
+    var hot3item = ViewBag.hot3item;
+    var daily = ViewBag.dailyearning;
+    var ddaily = 0;
+    var monthlyearning = ViewBag.monthlyearning;
+    var monthly = 0;
+    var sevendays = ViewBag.sevendays;
+    var itemsttt = 0;
+
+
+    int[] hotsum = new int[3];
+    string[] hotcat = new string[3];
+    int ii = 0;
+    int i = 0;
+    int a = 0;
+    int[] items1 = new int[1];
+    int[] items2 = new int[1];
+    int[] items3 = new int[1];
+    int[] itemst = new int[1];
+
+    string[] days = new string[7];
+    double[] day7money = new double[7];
+}
+@{
+    items1[0] = hot3item[0].sum;
+    items2[0] = hot3item[1].sum;
+    items3[0] = hot3item[2].sum;
+}
+@foreach (var item in hot3item)
+{
+    itemsttt += item.sum;
+    itemst[0] = itemsttt;
+}
+@foreach (var item in sevendays)
+{
+    days[ii] = DateTime.Parse(item.day.ToString()).ToShortDateString();
+    day7money[ii] = item.sum;
+    ii++;
+}
+
+@foreach (var o in hot3)
+{
+    hotsum[i] = o.sum;
+    hotcat[i] = o.c_name;
+    i++;
+}
+
+@foreach (var s in monthlyearning)
+{
+    monthly += s.sum;
+}
+
+@if (daily == null)
+{
+    ddaily = 0;
+}
+else
+{
+    ddaily = daily.sum;
+}
+
+@{
+    var hot3sum = Json.Encode(hotsum);
+    var hot3cat = Json.Encode(hotcat);
+    var days7day = Json.Encode(days);
+    var days7sum = Json.Encode(day7money);
+    var item1 = Json.Encode(items1);
+    var item2 = Json.Encode(items2);
+    var item3 = Json.Encode(items3);
+    var itemt = Json.Encode(itemsttt);
+}
+
+@*<link href="~/Assets/css/sb-admin-2.css" rel="stylesheet" />
+    <link href="~/Assets/css/sb-admin-2.min.css" rel="stylesheet" />*@
+
+<link href="~/Assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+@*<link href="~/Assets/css/sb-admin-2.min.css" rel="stylesheet">*@
+
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="mb-0 text-gray-800">Dashboard</h1>
+    @*<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>*@
+</div>
+
+<!-- Content Row -->
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">$ @monthly</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Daily)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">$ @ddaily</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">43%</div>
+                            </div>
+                            <div class="col">
+                                <div class="progress progress-sm mr-2">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Member</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewData["Members"]</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-alt fa-2x text-gray-300"></i>
+                        @*<i class="fas fa-comments fa-2x text-gray-300"></i>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="row">
+    <!-- Pie Chart -->
+    <div class="col-xl-5 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Sells Analyze</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card Body categoreis selling-->
+            <div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="myPieChart"></canvas>
+                </div>
+                <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-primary"></i> Mouse
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-success"></i> Keyboard
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-info"></i> Headset
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-7">
+        <div class="card full-height">
+            <div class="card-body">
+                <div class="card-title text-primary">Top 3 products</div>
+                <div class="card-category">@*Daily information about statistics in system*@</div>
+                <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
+                    <div class="px-2 pb-2 pb-md-0 text-center">
+                        <div id="circles-1"></div>
+                        <h6 class="fw-bold mt-3 mb-0">@hot3item[0].p_name</h6>
+                    </div>
+                    <div class="px-2 pb-2 pb-md-0 text-center">
+                        <div id="circles-2"></div>
+                        <h6 class="fw-bold mt-3 mb-0">@hot3item[1].p_name</h6>
+                    </div>
+                    <div class="px-2 pb-2 pb-md-0 text-center">
+                        <div id="circles-3"></div>
+                        <h6 class="fw-bold mt-3 mb-0">@hot3item[2].p_name</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@section endJS{*@
+<script src="~/Assets/vendor/jquery/jquery.min.js"></script>
+<script src="~/Assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="~/Assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="~/assets/js/plugin/chart-circle/circles.min.js"></script>
+<!-- Page level plugins -->
+<script src="~/Assets/vendor/chart.js/Chart.min.js"></script>
+<link href="~/Assets/Styles/Result_style/result.css" rel="stylesheet" />
+<script>
+    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#858796';
+
+    // Pie Chart Example
+    var ctx = document.getElementById("myPieChart");
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: @Html.Raw(hot3cat),
+            datasets: [{
+                data: @Html.Raw(hot3sum),
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,
+        },
+    });
+
+    //////////////////////////////////////////////////////
+    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#858796';
+
+
+
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function (n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    }
+
+
+
+    var ctx1 = document.getElementById("myAreaChart");
+    var myLineChart = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(days7day), /*["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]*/
+    datasets: [{
+        label: "Earnings",
+        lineTension: 0.3,
+        backgroundColor: "rgba(78, 115, 223, 0.05)",
+        borderColor: "rgba(78, 115, 223, 1)",
+        pointRadius: 3,
+        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointBorderColor: "rgba(78, 115, 223, 1)",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        data: @Html.Raw(days7sum),/*[0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],*/
+        }],
+      },
+    options: {
+        maintainAspectRatio: false,
+            layout: {
+            padding: {
+                left: 10,
+                    right: 25,
+                        top: 25,
+                            bottom: 0
+            }
+        },
+        scales: {
+            xAxes: [{
+                time: {
+                    unit: 'date'
+                },
+                gridLines: {
+                    display: false,
+                    drawBorder: false
+                },
+                ticks: {
+                    maxTicksLimit: 7
+                }
+            }],
+                yAxes: [{
+                    ticks: {
+                        maxTicksLimit: 5,
+                        padding: 10,
+                        // Include a dollar sign in the ticks
+                        callback: function (value, index, values) {
+                            return '$' + number_format(value);
+                        }
+                    },
+                    gridLines: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
+                        drawBorder: false,
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    }
+                }],
+        },
+        legend: {
+            display: false
+        },
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                            titleFontSize: 14,
+                                borderColor: '#dddfeb',
+                                    borderWidth: 1,
+                                        xPadding: 15,
+                                            yPadding: 15,
+                                                displayColors: false,
+                                                    intersect: false,
+                                                        mode: 'index',
+                                                            caretPadding: 10,
+                                                                callbacks: {
+                label: function(tooltipItem, chart) {
+                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                }
+            }
+        }
+    }
+    });
+</script>
+<script>
+    Circles.create({
+        id: 'circles-1',
+        radius: 45,
+        value:  @Html.Raw(item1),
+        maxValue: @Html.Raw(itemt),
+        width: 7,
+        text: @Html.Raw(item1),  @*@Html.Raw(item3[0]),*@
+        colors: ['#f1f1f1', '#FF9E27'],
+        duration: 400,
+        wrpClass: 'circles-wrp',
+        textClass: 'circles-text',
+        styleWrapper: true,
+        styleText: true
+    })
+
+    Circles.create({
+        id: 'circles-2',
+        radius: 45,
+        value: @Html.Raw(item2),
+        maxValue: @Html.Raw(itemt),
+        width: 7,
+        text: @Html.Raw(item2),
+        colors: ['#f1f1f1', '#2BB930'],
+        duration: 400,
+        wrpClass: 'circles-wrp',
+        textClass: 'circles-text',
+        styleWrapper: true,
+        styleText: true
+    })
+
+    Circles.create({
+        id: 'circles-3',
+        radius: 45,
+        value: @Html.Raw(item3),
+        maxValue: @Html.Raw(itemt),
+        width: 7,
+        text: @Html.Raw(item3),
+        colors: ['#f1f1f1', '#F25961'],
+        duration: 400,
+        wrpClass: 'circles-wrp',
+        textClass: 'circles-text',
+        styleWrapper: true,
+        styleText: true
+    })
+</script>
+@* } *@
+
+<!-- Page level custom scripts -->
+@*<script src="~/Assets/js/demo/chart-area-demo.js"></script>*@
+@*<script src="~/Assets/js/demo/chart-pie-demo.js"></script>*@

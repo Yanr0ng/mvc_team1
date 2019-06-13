@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Bbt1.Models.Member>
+
+@{
+    ViewBag.Title = "Customer Management";
+
+    var order = ViewBag.od;
+}
+
+
+@*目前總會員數量 @ViewData["Members"] <br/>
+
+    @foreach (var o in order)
+    {
+        @o<br/>
+    }*@
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title h2">Customer Management</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="basic-datatables" class="display table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.m_name)*@使用者名稱
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.m_email)*@電子郵件
+                                </th>
+                                <th>
+                                    訂購次數@*可在這裡做觀看此會員的訂單數量&消費金額*@
+                                </th>
+                                <th>
+                                    訂購總金額
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var o in order)
+                            {
+                                <tr>
+                                    <td>@o.m_name</td>
+                                    <td>@o.m_email</td>
+                                    <td>@o.Count</td>
+                                    <td>@o.Total</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

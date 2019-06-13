@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Bbt1.Models.Order_Detail>
+@{
+    var detail = ViewBag.order_detail;
+    var ttotal = 0;
+    foreach (var item in detail)
+    {
+        ttotal += Convert.ToInt64(item.Total);
+    }
+}
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title h2">Order Detail</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="basic-datatables" class="display table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.Order.o_receiver)*@
+                                    收件人
+                                </th>
+                                <th>
+                                    產品名稱
+                                </th>
+                                <th>
+                                    選購顏色
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.od_quantity)*@
+                                    數量
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.od_price)*@
+                                    單價
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(model => model.od_discount)*@
+                                    折扣
+                                </th>
+                                <th>
+                                    金額
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in detail)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.o_receiver
+                                    </td>
+                                    <td>
+                                        @item.p_name
+                                    </td>
+                                    <td>
+                                        @item.pd_color
+                                    </td>
+                                    <td>
+                                        @item.od_quantity
+                                    </td>
+                                    <td>
+                                        @item.od_price
+                                    </td>
+                                    <td>
+                                        @item.od_discount
+                                    </td>
+                                    <td>
+                                        @item.Total
+                                    </td>
+                                    @*<td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.od_id }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.od_id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.od_id })
+                        </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <hr />
+                    <div class="text-right" style="font-weight:bolder;margin-right:100px;">總金額 : @ttotal</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

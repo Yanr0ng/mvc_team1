@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Bbt1.Models.Discount>
+
+@{
+    ViewBag.Title = "Discount";
+}
+
+<h2>Discount</h2>
+
+<p>
+    @Html.ActionLink("新增活動", "CreateDiscount")
+</p>
+<table class="table">
+    <tr>
+        <th>            
+            @*@Html.DisplayNameFor(model => model.d_activity)*@
+            促銷活動
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.d_startdate)*@
+            開始日期
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.d_enddate)*@
+            截止日期
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Category.c_name)*@
+            促銷種類
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.d_discount)*@
+            促銷折扣
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.d_activity)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.d_startdate).ToString("yyyy-MM-dd HH:mm:ss")*@
+                @DateTime.Parse(item.d_startdate.ToString()).ToString("yyyy-MM-dd HH:mm:ss")
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.d_enddate)*@
+                @DateTime.Parse(item.d_enddate.ToString()).ToString("yyyy-MM-dd HH:mm:ss")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.c_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.d_discount)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "DeleteDiscount", new { id = item.d_id })
+            </td>
+        </tr>
+    }
+
+</table>

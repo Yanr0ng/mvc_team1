@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Bbt1.Models.Classify>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@ViewBag.p_name</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateClassifies", new { id = ViewBag.p_id })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            規格標題
+        </th>
+        <th>
+            規格內容
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Product.p_name)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.cl_specs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cl_content)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Product.p_name)
+                </td>*@
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.cl_id }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.cl_id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.cl_id })
+                </td>*@
+            <td>
+                <a href="~/ProductM/DeleteProductClassifies/@item.cl_id" class="alert_demo_7" onclick = "return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+                @*@Html.ActionLink("Delete", "DeleteProductClassifies", new { id = item.cl_id }, new { onclick = "return confirm('確定要刪除嗎?')" })*@
+            </td>
+        </tr>
+    }
+
+</table>
