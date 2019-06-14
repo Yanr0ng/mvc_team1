@@ -35,6 +35,8 @@ namespace Bbt1.Controllers
 
         public ActionResult Dashboard()
         {
+            Session["ordernum"] = db.Order.Count(x => x.o_status == "0");
+            
             ViewData["Order"] = db.Order.Count();     //--->訂單總數量
             ViewData["Members"] = db.Member.Count();  //--->會員總數量
             using (conn)

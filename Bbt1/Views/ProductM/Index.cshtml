@@ -47,8 +47,16 @@
                             {                                                 
                                 <tr>
                                     <td style="padding:0 0 0 10px !important;">
-                                        <a href="~/ProductM/Edit/@item.p_id"><i class="fa fa-edit" style="color:dodgerblue;margin-right:10px;font-size:18px;"></i></a>
-                                        <a href="~/ProductM/Delete/@item.p_id" class="alert_demo_7" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+                                        @if (item.p_status == 0.ToString())
+                                        {
+                                            <a href="~/ProductM/Edit/@item.p_id"><i class="fa fa-edit" style="color:dodgerblue;margin-right:10px;font-size:18px;"></i></a>
+                                            <a href="~/ProductM/Delete/@item.p_id" class="alert_demo_7" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+                                        }
+                                        else if (item.p_status == 1.ToString())
+                                        {
+                                            <a href="~/ProductM/Edit/@item.p_id"><i class="fa fa-edit" style="color:dodgerblue;margin-right:10px;font-size:18px;"></i></a>
+                                        }
+                                        else if(item.p_status == 8.ToString()) { }
                                         @*<button type="button" class="btn btn-outline-secondary popmodal" id="pid" onclick="getid(@item.p_id,'/ProductM/Edit')" style="width:65px;font-size:10px">產品詳細</button>*@
                                     </td>
                                     <td style="padding:0 10px !important;">
@@ -65,7 +73,7 @@
                                         @DateTime.Parse(item.p_lauchdate.ToString()).ToShortDateString()
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.p_status) @*到時候要刪掉*@
+                                        @*@Html.DisplayFor(modelItem => item.p_status)*@ @*到時候要刪掉*@
                                         @if (item.p_status == 0.ToString())
                                         {
                                             <label>上架中</label>

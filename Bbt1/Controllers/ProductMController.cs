@@ -225,6 +225,7 @@ namespace Bbt1.Controllers
             return View(classify);
         }
 
+        [OutputCache(Duration = 60)]
         //折扣DISCOUNT
         public ActionResult Discount()
         {

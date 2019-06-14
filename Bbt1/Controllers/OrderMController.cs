@@ -30,7 +30,7 @@ namespace Bbt1.Controllers
         // GET: OrderM
         public ActionResult Index(string SortOrder, int? page)
         {
-            
+            Session["ordernum"] = db.Order.Count(x => x.o_status == "0");
             ViewBag.name = String.IsNullOrEmpty(SortOrder) ? "name_desc" : "";
             ViewBag.receive = SortOrder == "receive" ? "receive_desc" : "receive";
             ViewBag.address = SortOrder == "address" ? "address_desc" : "address";
@@ -129,9 +129,9 @@ namespace Bbt1.Controllers
             var uid = db.Member.Where(x => x.m_id == order.m_id).FirstOrDefault().m_email_id;   //guid產出的不重複代號
             var email = db.Member.Where(x => x.m_id == order.m_id).FirstOrDefault().m_email;    //收信人的email
             string a = Convert.ToString(uid);
-
+        
             string cont;
-            cont = "http://" + Request.Url.Authority + "/Member/result?uid=" + a;  //訂單的網址
+            cont = "https://gurutwmvc.azurewebsites.net" + "/Member/result?uid=" + a;  //訂單的網址
             System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();//建立MAIL   
             MyMail.From = new System.Net.Mail.MailAddress("gurutw201905@gmail.com", "Guru");//寄信人   
             MyMail.To.Add(new System.Net.Mail.MailAddress(email));//收信人1     
