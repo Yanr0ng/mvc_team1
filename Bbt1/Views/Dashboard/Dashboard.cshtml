@@ -9,7 +9,6 @@
     var sevendays = ViewBag.sevendays;
     var itemsttt = 0;
 
-
     int[] hotsum = new int[3];
     string[] hotcat = new string[3];
     int ii = 0;
@@ -284,7 +283,7 @@ else
     var myPieChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: @Html.Raw(hot3cat),
+            labels:  @Html.Raw(hot3cat),
             datasets: [{
                 data: @Html.Raw(hot3sum),
                 backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],

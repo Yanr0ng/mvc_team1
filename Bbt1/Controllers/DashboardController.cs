@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Dapper;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
 
 namespace Bbt1.Controllers
 {
@@ -78,7 +80,7 @@ namespace Bbt1.Controllers
                     "inner join [dbo].[Order] o on o.o_id = od.o_id " +
                     "group by convert(date, o.o_date) " +
                     "order by convert(date, o.o_date) desc";
-
+                
                 var hotcat = conn.Query(sql).ToList();
                 var hotitem = conn.Query(sql2).ToList();
                 var dailyearning = conn.Query(sql3).FirstOrDefault();
@@ -93,35 +95,5 @@ namespace Bbt1.Controllers
             }
             return View();
         }
-        //public ActionResult Member()
-        //{
-        //    using (conn)
-        //    {
-
-        //        string sql = "SELECT m_name,m_email,(SELECT m_id FROM Member " +
-        //            "WHERE m_id = m.m_id) AS Id, (SELECT COUNT(m_id) FROM[dbo].[Order] " +
-        //            "WHERE m_id = m.m_id and o_status!=8 and o_status!=4) AS Count, " +
-        //            "SUM(od.od_quantity * od.od_price * (od.od_discount)), " +
-        //            "(select SUM(od.od_quantity * od.od_price * (od.od_discount)) " +
-        //            "from [dbo].[Order] o " +
-        //            "inner JOIN[dbo].[Order_Detail] od on od.o_id = o.o_id " +
-        //            "where o.o_status!=4 and o_status!=8 and o.m_id=m.m_id) " +
-        //            "AS Total " +
-        //            "FROM Member m " +
-        //            "LEFT OUTER JOIN[dbo].[Order] o on o.m_id = m.m_id " +
-        //            "LEFT JOIN[dbo].[Order_Detail] od on od.o_id = o.o_id " +
-        //            "GROUP BY m_name,m_email,m.m_id";
-
-        //        var order = conn.Query(sql).ToList();
-        //        ViewBag.od = order;
-        //    }
-        //    //List<Order> order;     --->之所以不能用是因為List<!!!> 要新的一個類別才能使用 新的類別要放我們查詢的欄位
-        //    //string sql = "select m_name,m_email,COUNT(o.m_id) as Count from Member m left join [dbo].[Order] o on m.m_id = o.m_id group by m_name,m_email,m.m_id";
-        //    //order = conn.Query<Order>(sql).ToList();
-        //    //ViewBag.od = order;
-
-        //    return View();
-        //}
-        
     }
 }
