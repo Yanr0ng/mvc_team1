@@ -9,28 +9,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using Bbt1.Repository;
 
 namespace Bbt1.Controllers
 {
     public class OrderMController : Controller
     {
-        MvcDataBaseEntities db = new MvcDataBaseEntities();
-
-        private readonly string ConnString;
-        private readonly SqlConnection conn;
-        public OrderMController()
-        {
-            if (string.IsNullOrEmpty(ConnString))
-            {
-                ConnString = ConfigurationManager.ConnectionStrings["MvcDataBase"].ConnectionString;
-            }
-            conn = new SqlConnection(ConnString);
-        }
+        private OrderMRepository _OMrepo = new OrderMRepository();
 
         // GET: OrderM
         public ActionResult Index(string SortOrder, int? page)
         {
-            Session["ordernum"] = db.Order.Count(x => x.o_status == "0");
+            Session["ordernum"] = _OMrepo.OrderCount();           
             ViewBag.name = String.IsNullOrEmpty(SortOrder) ? "name_desc" : "";
             ViewBag.receive = SortOrder == "receive" ? "receive_desc" : "receive";
             ViewBag.address = SortOrder == "address" ? "address_desc" : "address";
@@ -39,57 +29,56 @@ namespace Bbt1.Controllers
             ViewBag.odate = SortOrder == "odate" ? "odate_desc" : "odate";
             ViewBag.ddate = SortOrder == "ddate" ? "ddate_desc" : "ddate";
             ViewBag.status = SortOrder == "status" ? "status_desc" : "status";
-            var order = db.Order.Where(x => x.o_status != 8.ToString()).ToList().OrderBy(x => x.o_status).ThenByDescending(x => x.o_delivedate).ThenByDescending(x => x.o_date);
-
+            var order = _OMrepo.GetAllOrder();
             switch (SortOrder)
             {
                 case "name_desc":
-                    order = order.OrderByDescending(s => s.Member.m_name);
+                    order = order.OrderByDescending(s => s.Member.m_name).ToList();
                     break;
                 case "address":
-                    order = order.OrderBy(s => s.o_address);
+                    order = order.OrderBy(s => s.o_address).ToList();
                     break;
                 case "address_desc":
-                    order = order.OrderByDescending(s => s.o_address);
+                    order = order.OrderByDescending(s => s.o_address).ToList();
                     break;
                 case "receive":
-                    order = order.OrderBy(s => s.o_receiver);
+                    order = order.OrderBy(s => s.o_receiver).ToList();
                     break;
                 case "receive_desc":
-                    order = order.OrderByDescending(s => s.o_receiver);
+                    order = order.OrderByDescending(s => s.o_receiver).ToList();
                     break;
                 case "dway":
-                    order = order.OrderBy(s => s.Delive_Way.dw_name);
+                    order = order.OrderBy(s => s.Delive_Way.dw_name).ToList();
                     break;
                 case "dway_desc":
-                    order = order.OrderByDescending(s => s.Delive_Way.dw_name);
+                    order = order.OrderByDescending(s => s.Delive_Way.dw_name).ToList();
                     break;
                 case "pay":
-                    order = order.OrderBy(s => s.Payment.pay_name);
+                    order = order.OrderBy(s => s.Payment.pay_name).ToList();
                     break;
                 case "pay_desc":
-                    order = order.OrderByDescending(s => s.Payment.pay_name);
+                    order = order.OrderByDescending(s => s.Payment.pay_name).ToList();
                     break;
                 case "odate":
-                    order = order.OrderBy(s => s.o_date);
+                    order = order.OrderBy(s => s.o_date).ToList();
                     break;
                 case "odate_desc":
-                    order = order.OrderByDescending(s => s.o_date);
+                    order = order.OrderByDescending(s => s.o_date).ToList();
                     break;
                 case "ddate":
-                    order = order.OrderBy(s => s.o_delivedate);
+                    order = order.OrderBy(s => s.o_delivedate).ToList();
                     break;
                 case "ddate_desc":
-                    order = order.OrderByDescending(s => s.o_delivedate);
+                    order = order.OrderByDescending(s => s.o_delivedate).ToList();
                     break;
                 case "status":
-                    order = order.OrderBy(s => s.o_status);
+                    order = order.OrderBy(s => s.o_status).ToList();
                     break;
                 case "status_desc":
-                    order = order.OrderByDescending(s => s.o_status);
+                    order = order.OrderByDescending(s => s.o_status).ToList();
                     break;
                 default:
-                    order = order.Where(x => x.o_status != 8.ToString()).ToList().OrderBy(x => x.o_status).ThenByDescending(x => x.o_delivedate).ThenByDescending(x => x.o_date);;
+                    order = order.OrderByDescending(s => s.o_date).ToList();
                     break;
             }
             int pageSize = 8;
@@ -100,20 +89,10 @@ namespace Bbt1.Controllers
         //查看訂單詳細
         public ActionResult OrderDetail(int? id)
         {
-            var order = db.Order.Where((x)=> x.o_id == id).FirstOrDefault();
+            var order = _OMrepo.GetAllOrder().Where((x) => x.o_id == id).FirstOrDefault();
 
-            using (conn)
-            {
-                string sql = "select o_status,o_receiver,p.p_name,pd.pd_color,od.od_id,od.od_quantity,od.od_price,od.od_discount," +
-                    "(od.od_quantity*od.od_price*od.od_discount) as Total " +
-                    "from [dbo].[Order_Detail] od " +
-                    "inner join [dbo].[Product_Detail] pd on pd.pd_id = od.pd_id " +
-                    "inner join [dbo].[Product] p on p.p_id = pd.p_id " +
-                    "inner join [dbo].[Order] o on od.o_id = o.o_id " +
-                    "where o.o_id=" + id;
-                var order_detail = conn.Query(sql).ToList();
-                ViewBag.order_detail = order_detail;
-            }
+            ViewBag.order_detail = _OMrepo.SelectAll(id).ToList();
+
             ViewBag.order = order;
             return View();
         }
@@ -121,15 +100,16 @@ namespace Bbt1.Controllers
         //出貨按鈕    //寄信給使用者
         public ActionResult Ship(int? id)
         {
-            var order = db.Order.Where(m => m.o_id == id).FirstOrDefault();
-            order.o_status = 1.ToString();
-            order.o_delivedate = DateTime.Now;
-            db.SaveChanges();
+            //var order = _OMrepo.GetAllOrder().Where(m => m.o_id == id).FirstOrDefault();
+            //order.o_status = 1.ToString();
+            //order.o_delivedate = DateTime.Now;
+            //db.SaveChanges();
+            var order = _OMrepo.ChangeStatus(id);
 
-            var uid = db.Member.Where(x => x.m_id == order.m_id).FirstOrDefault().m_email_id;   //guid產出的不重複代號
-            var email = db.Member.Where(x => x.m_id == order.m_id).FirstOrDefault().m_email;    //收信人的email
+            var uid = _OMrepo.GetAllMember().Where(x => x.m_id == order.m_id).FirstOrDefault().m_email_id;   //guid產出的不重複代號
+            var email = _OMrepo.GetAllMember().Where(x => x.m_id == order.m_id).FirstOrDefault().m_email;    //收信人的email
             string a = Convert.ToString(uid);
-        
+
             string cont;
             cont = "https://gurutwmvc.azurewebsites.net" + "/Member/result?uid=" + a;  //訂單的網址
             System.Net.Mail.MailMessage MyMail = new System.Net.Mail.MailMessage();//建立MAIL   
@@ -149,32 +129,21 @@ namespace Bbt1.Controllers
         //刪除一筆訂單 改訂單狀態為8
         public ActionResult DeleteOrder(int? id)
         {
-            var o = db.Order.Where(x => x.o_id == id).FirstOrDefault();
-            o.o_status = 8.ToString();
-            db.SaveChanges();
+            _OMrepo.OrderError(id);
             return RedirectToAction("Index");
         }
 
         //刪除一筆訂單詳細
         public ActionResult DeleteOrderDetail(int? id)
         {
-            var od = db.Order_Detail.Where(x => x.od_id == id).FirstOrDefault();
-            var oid = od.o_id;            
-            db.Order_Detail.Remove(od);
-            db.SaveChanges();
+            var oid =_OMrepo.DeleteOrderDetail(id);
             return RedirectToAction("OrderDetail", new { id = oid });
         }
 
-        //訂單轉變PDF檔
+        //訂單轉PDF檔
         public ActionResult ExportPDF(int id)
         {
-            //UrlAsPdf pdf = new UrlAsPdf("https://gurutwadmin.azurewebsites.net/OrderM/OrderDetail/" + id); 
-            ////ActionAsPdf pdf = new ActionAsPdf("Dashboard");
-            //pdf.FileName = "OrderDetail.pdf";
-            //pdf.PageSize = Rotativa.Options.Size.A4;
-            //return pdf;
-
-            return new ActionAsPdf("OrderDetail",new { id })
+            return new ActionAsPdf("OrderDetail", new { id })
             {
                 FileName = Server.MapPath("OrderDetail.pdf"),
                 PageSize = Rotativa.Options.Size.A4

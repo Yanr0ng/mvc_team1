@@ -8,19 +8,9 @@ using System.Web;
 namespace Bbt1.Repository
 {
 
-    public class MemberRepository : BaseRepository, IGenericRepository<MemberViewModel>
+    public class MemberRepository : BaseRepository
     {
         public IEnumerable<MemberViewModel> memberlist;
-        public int Delete(MemberViewModel t)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Insert(MemberViewModel t)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<MemberViewModel> SelectAll()
         {
             using (conn)
@@ -41,20 +31,8 @@ namespace Bbt1.Repository
                     "GROUP BY m_name,m_email,m.m_id";
 
                 memberlist = conn.Query<MemberViewModel>(sql);
-            }
-            
-
+            }            
             return memberlist;
-        }
-
-        public MemberViewModel SelectById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(MemberViewModel t)
-        {
-            throw new NotImplementedException();
-        }
+        }        
     }
 }

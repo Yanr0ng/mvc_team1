@@ -253,9 +253,18 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
+    <Compile Include="Repository\DashboardRepository.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\MemberRepository.cs" />
+    <Compile Include="Repository\OrderMRepository.cs" />
+    <Compile Include="Repository\ProductMRepository.cs" />
+    <Compile Include="ViewModel\D_CategorySellViewModel.cs" />
+    <Compile Include="ViewModel\D_DailyEarningViewModel.cs" />
+    <Compile Include="ViewModel\D_HotItemsViewModel.cs" />
+    <Compile Include="ViewModel\D_MonthlyEarningViewModel.cs" />
+    <Compile Include="ViewModel\D_SenvenDayViewModel.cs" />
     <Compile Include="ViewModel\MemberViewModel.cs" />
+    <Compile Include="ViewModel\OrderDetailViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\atlantis.css" />

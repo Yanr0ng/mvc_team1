@@ -50,7 +50,7 @@
                                         @if (item.p_status == 0.ToString())
                                         {
                                             <a href="~/ProductM/Edit/@item.p_id"><i class="fa fa-edit" style="color:dodgerblue;margin-right:10px;font-size:18px;"></i></a>
-                                            <a href="~/ProductM/Delete/@item.p_id" class="alert_demo_7" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
+                                            <a href="~/ProductM/DeleteProduct/@item.p_id" class="alert_demo_7" onclick="return confirm('確定要刪除嗎?')"><i class="fa fa-times" style="color:red;font-size:18px;"></i></a>
                                         }
                                         else if (item.p_status == 1.ToString())
                                         {

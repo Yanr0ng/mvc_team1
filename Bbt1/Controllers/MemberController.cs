@@ -12,8 +12,6 @@ namespace Bbt1.Controllers
 {
     public class MemberController : Controller
     {
-        private readonly string ConnString;
-        private readonly SqlConnection conn;
         private MemberRepository _Mrepo = new MemberRepository();
         
         // GET: Member

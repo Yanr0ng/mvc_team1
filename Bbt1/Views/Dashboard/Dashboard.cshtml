@@ -51,13 +51,16 @@
     monthly += s.sum;
 }
 
-@if (daily == null)
+@if (daily.Count == 0)
 {
     ddaily = 0;
 }
 else
 {
-    ddaily = daily.sum;
+    foreach(var d in daily)
+    {
+        ddaily = d.sum;
+    }
 }
 
 @{
